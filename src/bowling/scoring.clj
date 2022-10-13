@@ -5,27 +5,32 @@
 
 (defn spare? [[fst snd]]
   "A frame resulted in spare if the first roll was not a strike and if the total is 10."
-
   (and
     (not (strike? [fst snd]))
     (= (+ fst snd) 10)))
 
 (defn strike-bonus [next-rolls]
   "A strike bonus is the value of the next two *rolls*. If the next roll is a strike then you must go to the next frame."
-
   (apply + (take 2 (remove nil? next-rolls))))
 
-(defn frame-score [frame rolls]
+(defn strike-score [next-rolls]
+  "The score for a strike is 10 + the bonus"
+  (+ 10 (strike-bonus next-rolls)))
+
+(defn spare-score [next-rolls]
+  "The score for a spare is 10 + the bonus"
+  (+ 10 (first next-rolls)))
+
+(defn frame-score [frame next-rolls]
   "The score for a frame is as follows
     * 10 points for a strike
     * 10 points for a spate
-    * The number of pins knocked down otherwise"
-
+    * Otherwise, the number of pins knocked down"
   (if
     (strike? frame)
-    (+ 10 (strike-bonus rolls))
+    (strike-score next-rolls)
     (if (spare? frame)
-      (+ 10 (first rolls))
+      (spare-score next-rolls)
       (reduce + frame))))
 
 (defn final-frame [rolls]
