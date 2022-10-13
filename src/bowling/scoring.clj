@@ -56,8 +56,7 @@
 (defn bonus-rolls [all-rolls] (subvec all-rolls 20))
 
 (defn game-score [rolls]
-  "Given a list of rolls, where the length is between 20 and 23. return the score of the game."
-  ;TODO this is an eyesore and needs to be broken down accordingly
+  "Given a list of rolls, where the length is between 20 and 22 (inclusive), return the score of the game."
   (let
     ; the maine game frames are the first 20 rolls
     [game-frames (vec (as-frames (main-game rolls)))]
